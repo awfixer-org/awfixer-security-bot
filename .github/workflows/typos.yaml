@@ -1,0 +1,22 @@
+name: Check for typos
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check-typos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create typos config
+        run: |
+          echo "[files]" > typos.toml
+          echo "extend-exclude = ['src/events/messageCreate/handleLogs.js']" >> typos.toml
+
+      - name: Run spellcheck
+        uses: crate-ci/typos@v1.25.0
